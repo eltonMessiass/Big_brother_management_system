@@ -4,14 +4,21 @@ package com.eltonmessias.bigBrotherManagement.service;
 import com.eltonmessias.bigBrotherManagement.dto.ProductDTO;
 import com.eltonmessias.bigBrotherManagement.model.Product;
 import com.eltonmessias.bigBrotherManagement.repository.ProductRepository;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductService {
-    private final ProductRepository productRepository;
 
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    @Autowired
+    private ProductRepository productRepository;
+
+
+    public ProductDTO convertToDTO(Product product) {
+        ProductDTO productDTO = new ProductDTO(product.getId(), product.getName(), product.getDescription(), product.getPurchasePrice(), product.getSalePrice(), product.getQuantity());
+        BeanUtils.copyProperties(product, productDTO);
+        return productDTO;
     }
 
     public ProductDTO saveProduct(ProductDTO productDTO) {
