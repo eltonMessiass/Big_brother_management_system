@@ -26,11 +26,4 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-//    public Product(ProductDTO data) {
-//        this.name = data.name();
-//        this.description = data.description();
-//        this.purchasePrice = data.purchasePrice();
-//        this.salePrice = data.salePrice();
-//        this.quantity = data.quantity();
-//    }
 }

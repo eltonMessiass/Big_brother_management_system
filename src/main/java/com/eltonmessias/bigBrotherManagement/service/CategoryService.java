@@ -38,11 +38,9 @@ public class CategoryService {
     public CategoryDTO updateCategory(UUID id, CategoryDTO categoryDTO) throws Exception {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new Exception("Category not found"));
         if (category != null) {
-//            BeanUtils.copyProperties(categoryDTO, category);
             category.setName(categoryDTO.name());
             category.setDescription(categoryDTO.description());
             Category savedCategory = categoryRepository.save(category);
-//            BeanUtils.copyProperties(savedCategory, categoryDTO);
             return convertToDTO(savedCategory);
         } else {
             throw new Exception("Product not found");
