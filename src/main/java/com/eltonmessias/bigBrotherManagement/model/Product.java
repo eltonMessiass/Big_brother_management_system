@@ -22,6 +22,8 @@ public class Product {
     private double purchasePrice;
     private double salePrice;
     private int quantity;
+    @ManyToOne
+    private Category category;
 
 //    public Product(ProductDTO data) {
 //        this.name = data.name();
