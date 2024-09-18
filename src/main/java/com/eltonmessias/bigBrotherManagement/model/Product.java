@@ -23,6 +23,7 @@ public class Product {
     private double salePrice;
     private int quantity;
     @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
 //    public Product(ProductDTO data) {
