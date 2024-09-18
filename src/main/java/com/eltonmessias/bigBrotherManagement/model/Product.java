@@ -1,9 +1,7 @@
 package com.eltonmessias.bigBrotherManagement.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.eltonmessias.bigBrotherManagement.dto.ProductDTO;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +14,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -25,4 +22,12 @@ public class Product {
     private double purchasePrice;
     private double salePrice;
     private int quantity;
+
+//    public Product(ProductDTO data) {
+//        this.name = data.name();
+//        this.description = data.description();
+//        this.purchasePrice = data.purchasePrice();
+//        this.salePrice = data.salePrice();
+//        this.quantity = data.quantity();
+//    }
 }
