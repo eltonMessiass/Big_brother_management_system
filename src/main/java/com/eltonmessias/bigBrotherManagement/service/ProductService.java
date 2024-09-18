@@ -8,6 +8,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 public class ProductService {
 
@@ -15,31 +18,49 @@ public class ProductService {
     private ProductRepository productRepository;
 
 
-    public ProductDTO convertToDTO(Product product) {
-        ProductDTO productDTO = new ProductDTO(product.getId(), product.getName(), product.getDescription(), product.getPurchasePrice(), product.getSalePrice(), product.getQuantity());
-        BeanUtils.copyProperties(product, productDTO);
+    public Product convertToProduct(ProductDTO productDTO) {
+        Product product = new Product();
+        BeanUtils.copyProperties(productDTO, product);
+        return product;
+    }
+    public ProductDTO convertToProductDTO(Product product) {
+        ProductDTO productDTO;
+        productDTO = new ProductDTO(product.getId(), product.getName(), product.getDescription(), product.getPurchasePrice(), product.getSalePrice(), product.getQuantity());
         return productDTO;
     }
 
-    public ProductDTO saveProduct(ProductDTO productDTO) {
-        Product product = new Product();
-        product.setName(productDTO.name());
-        product.setDescription(productDTO.description());
-        product.setPurchasePrice(productDTO.purchasePrice());
-        product.setSalePrice(productDTO.salePrice());
-        product.setQuantity(productDTO.quantity());
-
-        Product savedProduct = productRepository.save(product);
-
-
-        return new ProductDTO(
-                savedProduct.getId(),
-                savedProduct.getName(),
-                savedProduct.getDescription(),
-                savedProduct.getPurchasePrice(),
-                savedProduct.getSalePrice(),
-                savedProduct.getQuantity()
-        );
-
+    public List<Product> getAllProducts() {
+        return this.productRepository.findAll();
     }
+
+    public ProductDTO saveProduct(ProductDTO productDTO) {
+        Product product = this.convertToProduct(productDTO);
+        productRepository.save(product);
+        return this.convertToProductDTO(product);
+    }
+
+    public ProductDTO getProductById(UUID id) {
+        Product product = this.productRepository.findById(id).orElse(null);
+        assert product != null;
+        return this.convertToProductDTO(product);
+    }
+
+
+    public ProductDTO updateProduct(UUID id, ProductDTO productDTO) throws Exception{
+        Product product = this.productRepository.findById(id).orElseThrow(() -> new Exception("Product not found"));
+        if (product != null) {
+            BeanUtils.copyProperties(productDTO, product, "id");
+            Product updatedProduct = productRepository.save(product);
+            return convertToProductDTO(updatedProduct);
+        } else {
+            throw new Exception("Product not found");
+        }
+    }
+
+    public void deleteProduct(UUID id) {
+        this.productRepository.deleteById(id);
+    }
+
+
+
 }
